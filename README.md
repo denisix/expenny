@@ -5,7 +5,7 @@ App to track your expenses, uses
 * Meteor :thumbsup:
 * React :thumbsup:
 
-![Screenshot](/icons/screen1.png)
+![Screenshot](/icons/screen-1.png)
 
 # Usage:
 ```
