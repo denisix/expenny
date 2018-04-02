@@ -1,10 +1,11 @@
+![Logo](/icons/96.png)
+
 # expenses
 App to track your expenses, uses
-* Meteor
-* React
-:thumbsup:
+* Meteor :thumbsup:
+* React :thumbsup:
 
-![Logo](/icons/192.png)
+![Screenshot](/icons/screen1.png)
 
 # Usage:
 ```
