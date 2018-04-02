@@ -12,5 +12,7 @@ App to track your expenses, uses
 git clone https://github.com/denisix/expenses
 meteor
 ```
-
 then point your browser to http://localhost:3000
+
+# Dependencies:
+* Meteor - https://www.meteor.com/install
