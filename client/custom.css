@@ -123,6 +123,12 @@
 
 .input-group input.form-control { border-radius: 0; -webkit-border-radius:0; padding: .375rem .3rem; text-align:center; }
 
+.login-link-and-dropdown-list #login-sign-in-link { color: rgba(255,255,255,.5); }
+.login-link-and-dropdown-list #login-name-link { color: rgba(255,255,255,.5); }
+
+#login-buttons a, .accounts-dialog a { color: #000 }
+
+
 @media (max-width: 990px) { 
 	.input-group-prepend { display:none !important; }
 	.summarize { display:none; }
