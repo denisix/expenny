@@ -1,0 +1,26 @@
+{
+  "name": "expenses",
+  "private": true,
+  "scripts": {
+    "start": "meteor run"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.0.0-beta.36",
+    "@vx/gradient": "0.0.153",
+    "@vx/mock-data": "0.0.153",
+    "@vx/shape": "0.0.158",
+    "bcrypt": "^1.0.3",
+    "cordova-plugin-splashscreen": "^5.0.2",
+    "cordova-plugin-statusbar": "^2.4.1",
+    "history": "^4.7.2",
+    "meteor-node-stubs": "^0.3.2",
+    "react": "^16.2.0",
+    "react-autosuggest": "^9.3.4",
+    "react-dom": "^16.2.0",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2"
+  },
+  "devDependencies": {
+    "uglify-js-brunch": "^2.10.0"
+  }
+}
