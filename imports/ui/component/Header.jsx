@@ -8,6 +8,7 @@ export default class Header extends Component {
 
     render() {
 	    const path = this.props.history.location.pathname;
+		console.log('user', this.props.user)
         return(
 
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -18,8 +19,8 @@ export default class Header extends Component {
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                    <span className="navbar-text">
-                        accounts..
+                    <span className="navbar-text badge badge-success mr-3 text-dark">
+						{this.props.user.username}
                     </span>
 
                     {this.props.user && (
@@ -35,6 +36,9 @@ export default class Header extends Component {
                             </li>
                             <li className={path=='/chart'?"nav-item active":"nav-item"}>
                                 <Link className="nav-link" to="/chart">Chart</Link>
+                            </li>
+                            <li className={path=='/chart2'?"nav-item active":"nav-item"}>
+                                <Link className="nav-link" to="/chart2">Stats</Link>
                             </li>
                             <li className={path=='/settings'?"nav-item active":"nav-item"}>
                                 <Link className="nav-link" to="/settings">Settings</Link>

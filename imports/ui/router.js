@@ -44,7 +44,7 @@ class App extends Component {
 		  <Route exact path="/todo" render={(p) => <Page_Todo {...this.props} />} />
           <Route exact path="/settings" render={(p) => <Page_Settings {...this.props} />} />
           <Route exact path="/chart" render={(p) => <Page_Chart {...this.props} />} />
-		  <Route exact path="/chart/2" render={(p) => <Page_Chart2 {...this.props} />} />
+		  <Route exact path="/chart2" render={(p) => <Page_Chart2 {...this.props} />} />
           <Route component={NotFound} />
         </Switch>
 

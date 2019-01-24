@@ -11,7 +11,7 @@ export default class Page_Settings extends Component {
   }
 
   getSign() {
-  	const user = this.props.currentUser;
+  	const user = this.props.user;
     if (user && typeof user === "object" && "profile" in user && typeof user.profile === "object" && "sign" in user.profile) {
         return user.profile.sign;
     }
@@ -19,7 +19,7 @@ export default class Page_Settings extends Component {
   }
 
   getSignOrder(lr) {
-	const user = this.props.currentUser;
+	const user = this.props.user;
     if (user && typeof user === "object" && "profile" in user && typeof user.profile === "object" && "signOrder" in user.profile) {
 		return (lr == 'l') ? !user.profile.signOrder : user.profile.signOrder;
     }
@@ -27,7 +27,7 @@ export default class Page_Settings extends Component {
   }
 
   getCustomDate() {
-  	const user = this.props.currentUser;
+  	const user = this.props.user;
     if (user && typeof user === "object" && "profile" in user && typeof user.profile === "object" && "customDate" in user.profile) {
         return user.profile.customDate;
     }
@@ -55,7 +55,7 @@ export default class Page_Settings extends Component {
 
   render() {
 
-	if (!this.props.currentUser) return <p>Please login!</p>;
+	if (!this.props.user) return <p>Please login!</p>;
 
     return (
 		<div>
