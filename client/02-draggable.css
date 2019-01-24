@@ -1,0 +1,54 @@
+.list {
+  padding: 10px;
+}
+.item {
+  border: 1px solid #b8a9ee33;
+  overflow: hidden;
+  transform-origin: 30% 50% 0px;
+  padding-left: 20px;
+  background: white;
+  max-height: 100em;
+  transition: max-height 0.5s ease-in;
+  padding-top: 2px;
+}
+
+.hide {
+	transition: max-height 0.1s ease-out;
+	max-height: 2em;
+}
+
+.item .dragHandle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: move;
+  width: 20px;
+  height: 100%;
+  background: url('/img/drag.png') 30% 50% no-repeat no-repeat;
+}
+.item:hover .dragHandle, .item.dragged .dragHandle {
+  visibility: visible;
+}
+.item h2 {
+  margin: 0;
+}
+.item .subtitle {
+  font-weight: bold;
+}
+
+
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 7px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, .5);
+  -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+}
+
+textarea.todo { min-height:10rem }
+
+.btn-sm { padding: 0px 2em !important; }
+
+.badge { cursor: pointer; } 

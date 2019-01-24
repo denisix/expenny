@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Autosuggest from 'react-autosuggest';
-import { Revenues } from '../api/db.js';
+import { Revenues } from '../../api/db.js';
 
 export default class SuggestRevenue extends Component {
 

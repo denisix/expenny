@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { withTracker } from 'meteor/react-meteor-data';
 
-import { Expenses, Cats } from '../api/db.js';
-import Expense from './Expense.js';
-import SuggestCategory from './SuggestCategory.js';
-import SuggestExpense from './SuggestExpense.js';
+import Expense from '../component/Expense.js';
+import SuggestCategory from '../component/SuggestCategory.js';
+import SuggestExpense from '../component/SuggestExpense.js';
 
-class Exp extends Component {
+export default class Page_Expenses extends Component {
   handleSubmit(event) {
     event.preventDefault();
+	let inp_date = '';
+
+	if ('date' in this.refs) {
+		inp_date = ReactDOM.findDOMNode(this.refs.date).value.trim();
+		console.log('inp_date = '+inp_date);
+	}
+
 	const inp_title = this.refs.title.state.value.trim();
 	const inp_category = this.refs.category.state.value.trim();
 	const inp_price = parseFloat(ReactDOM.findDOMNode(this.refs.price).value.trim());
@@ -18,7 +23,7 @@ class Exp extends Component {
 		ReactDOM.findDOMNode(this.refs.price).value = '0';
 		ReactDOM.findDOMNode(this.refs.price).focus();
 	} else {
-		Meteor.call('exp.insert', inp_title, inp_category, inp_price);
+		Meteor.call('exp.insert', inp_title, inp_category, inp_price, inp_date);
 
 		ReactDOM.findDOMNode(this.refs.title).value = '';
 		ReactDOM.findDOMNode(this.refs.price).value = '';
@@ -35,7 +40,7 @@ class Exp extends Component {
   }
 
   getCategoryById(catId) {
-	const c = this.props.cats.filter(function(v){ return v._id == catId});
+	const c = this.props.cats_exp.filter(function(v){ return v._id == catId});
 	if (c && typeof c === "object" && 0 in c) {
 		//console.log(' category '+ catId +' => '+c[0].title);
 		return c[0].title;
@@ -57,15 +62,18 @@ class Exp extends Component {
 
   render() {
 
-	const user = this.props.currentUser;
+	const user = this.props.user
     if (!user || typeof user !== "object") return <p>Please login!</p>;
 
 	let sign = '$';
 	let order = true;
+	let customDate = false;
     if (user && typeof user === "object" && "profile" in user && typeof user.profile === "object") {
 		if ("sign" in user.profile) sign = user.profile.sign;
 		if ("signOrder" in user.profile) order = !user.profile.signOrder;
+		if ("customDate" in user.profile) customDate = user.profile.customDate;
     }
+	const col = customDate ? "col-3 inp-max" : "col-4 inp-max";
 
     return (
         <div>
@@ -73,13 +81,19 @@ class Exp extends Component {
 				<li className="list-group-item">
 					<form className="new-expense" onSubmit={this.handleSubmit.bind(this)}>
 					<div className="row">
-						<div className="col-4 inp-max">
+						{ customDate && (
+						<div className="col-2 inp-max">
+							<input type="text" ref="date" placeholder="2018.12.27" style={{width:"100%", display:"inline-block", padding:"7px 5px"}} />
+						</div>
+						)}
+
+						<div className={col}>
 					  		<SuggestExpense ref="title" placeholder="Expense" style={{width:"60%", display:"inline-block"}} exps={this.props.expenses} />
 					  	</div>
-						<div className="col-4 inp-max">
-					  		<SuggestCategory ref="category" style={{width:"30%"}} cats={this.props.cats} />
+						<div className={col}>
+					  		<SuggestCategory ref="category" style={{width:"30%"}} cats={this.props.cats_exp} />
 					  	</div>
-						<div className="col-4 inp-max">
+						<div className={col}>
 							<div className="row">
 								<div className="col-md">
 									{order ? (
@@ -123,13 +137,3 @@ class Exp extends Component {
     );
   }
 }
-
-export default withTracker(() => {
-	Meteor.subscribe('exps');
-	Meteor.subscribe('cats');
-	return {
-		expenses: Expenses.find({}, { sort: { createdAt: -1 } }).fetch(),
-		cats: Cats.find({ t: 'exp'}).fetch(),
-		currentUser: Meteor.user(),
-	};
-})(Exp);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
-import { Revenues } from '../api/db.js';
+import { Revenues } from '../../api/db.js';
 import { withTracker } from 'meteor/react-meteor-data';
 
 export default class Revenue extends Component {

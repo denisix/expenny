@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { withTracker } from 'meteor/react-meteor-data';
 
-import { Revenues, Cats } from '../api/db.js';
-import Revenue from './Revenue.js';
-import SuggestCategory from './SuggestCategory.js';
-import SuggestRevenue from './SuggestRevenue.js';
+import Revenue from '../component/Revenue.js';
+import SuggestCategory from '../component/SuggestCategory.js';
+import SuggestRevenue from '../component/SuggestRevenue.js';
 
-class Rev extends Component {
+export default class Page_Revenues extends Component {
   handleSubmit(event) {
     event.preventDefault();
 	const inp_title = this.refs.title.state.value.trim();
@@ -34,7 +32,7 @@ class Rev extends Component {
   }
 
   getCategoryById(catId) {
-	const c = this.props.cats.filter(function(v){ return v._id == catId});
+	const c = this.props.cats_rev.filter(function(v){ return v._id == catId});
 	if (c && typeof c === "object" && 0 in c) {
 		//console.log(' category '+ catId +' => '+c[0].title);
 		return c[0].title;
@@ -52,7 +50,7 @@ class Rev extends Component {
 
   render() {
 
-	const user = this.props.currentUser;
+	const user = this.props.user;
     if (!user || typeof user !== "object") return <p>Please login!</p>;
 
 	let sign = '$';
@@ -72,7 +70,7 @@ class Rev extends Component {
 					  		<SuggestRevenue ref="title" placeholder="Revenue" style={{width:"60%", display:"inline-block"}} revs={this.props.revenues} />
 					  	</div>
 						<div className="col-4 inp-max">
-					  		<SuggestCategory ref="category" style={{width:"30%"}} cats={this.props.cats} />
+					  		<SuggestCategory ref="category" style={{width:"30%"}} cats={this.props.cats_rev} />
 					  	</div>
 						<div className="col-4 inp-max">
 							<div className="row">
@@ -118,13 +116,3 @@ class Rev extends Component {
     );
   }
 }
-
-export default withTracker(() => {
-	Meteor.subscribe('revs');
-	Meteor.subscribe('cats');
-	return {
-		revenues: Revenues.find({}, { sort: { createdAt: -1 } }).fetch(),
-		cats: Cats.find({ t: 'rev' }).fetch(),
-		currentUser: Meteor.user(),
-	};
-})(Rev);

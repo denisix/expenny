@@ -1,35 +1,32 @@
 import React, { Component } from 'react';
 import Autosuggest from 'react-autosuggest';
-import { Cats } from '../api/db.js';
 
-export default class SuggestCategory extends Component {
+export default class SuggestInput extends Component {
 
   constructor(props) {
 	super(props);
 	this.state = {
 		value: '',
 		suggestions: [],
-		theme: {
-			input: 'react-autosuggest__input form-control',
-		},
+		list: [],
 	};
   }
 
   getSuggestions(value) {
 	const inputValue = value.trim().toLowerCase();
 	const inputLength = inputValue.length;
-	return inputLength === 0 ? this.props.cats : this.props.cats.filter(x =>
-		x.title.toLowerCase().slice(0, inputLength) === inputValue
+	return inputLength === 0 ? this.state.list : this.state.list.filter(x =>
+		x.toLowerCase().slice(0, inputLength) === inputValue
 	);
   }
 
   getSuggestionValue(suggestion) {
-    return suggestion.title;
+    return suggestion;
   }
 
   renderSuggestion(suggestion) {
     return (
-	    <span>{suggestion.title}</span>
+	    <span>{suggestion}</span>
 	);
   }
 
@@ -52,9 +49,8 @@ export default class SuggestCategory extends Component {
   };
 
   renderCategory() {
-    let cats = this.props.cats;
-  	return this.props.cats.map((e) => (
-      <option key={e._id}> {e.title} </option>
+  	return this.state.list.map((e, i) => (
+      <option key={i}> {e} </option>
     ));
   }
  
@@ -63,33 +59,31 @@ export default class SuggestCategory extends Component {
   	return true;
   }
 
-  First(p) {
-    if (typeof p === "object") {
-        for(var i in p) {
-            if (typeof p[i] === "object" && 'title' in p[i]) {
-                return p[i].title;
-            }
-        }
-    }
-	return '';
-  }
-
-  componentDidMount() {
-	
-  }
-
   render() {
 	const { value, suggestions } = this.state;
+
+	var uniq = this.props.source
+		.map((name) => {
+	    	return {count: 1, name: name.title}
+		})
+		.reduce((a, b) => {
+			a[b.name] = (a[b.name] || 0) + b.count
+				return a
+		}, {})
+	var sorted = Object.keys(uniq).sort((a, b) => uniq[a] < uniq[b]);
+	this.state.list = sorted;
+
+	//console.log(sorted);
     const inputProps = {
-        placeholder: "Category",
+        placeholder: this.props.placeholder || "Expense",
         value,
-		suggestions: this.props.cats,
+		suggestions: this.state.list,
         onChange: this.onChange
     };
 
+
 	return (
-		<Autosuggest
-			ref="ref1"
+		<Autosuggest 
 			suggestions={suggestions}
 			onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
 			onSuggestionsClearRequested={this.onSuggestionsClearRequested}

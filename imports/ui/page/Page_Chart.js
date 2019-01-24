@@ -1,15 +1,8 @@
 import React, { Component } from 'react';
-
 import { Pie } from '@vx/shape';
 import { Group } from '@vx/group';
 import { GradientPinkBlue } from '@vx/gradient';
 //import { letterFrequency, browserUsage } from '@vx/mock-data';
-
-import { withTracker } from 'meteor/react-meteor-data';
-
-import { Expenses, Cats } from '../api/db.js';
-
-import Expense from './Expense.js';
 
 function Label({ x, y, v, children }) {
   return (
@@ -27,7 +20,7 @@ function Label({ x, y, v, children }) {
   );
 }
 
-class Chart extends Component {
+export default class Page_Chart extends Component {
   getSign() {
   	const user = this.props.currentUser;
     if (user && typeof user === "object" && "profile" in user && typeof user.profile === "object" && "sign" in user.profile) {
@@ -45,7 +38,7 @@ class Chart extends Component {
   }
 
   getCategoryById(catId) {
-	const c = this.props.cats.filter(function(v){ return v._id == catId});
+	const c = this.props.cats_exp.filter(function(v){ return v._id == catId});
 	if (c && typeof c === "object" && 0 in c) {
 		//console.log(' category '+ catId +' => '+c[0].title);
 		return c[0].title;
@@ -108,10 +101,6 @@ class Chart extends Component {
       <div className="container">
         {Meteor.userId() != null ? (
             <div>
-                <header>
-                    <div className="account-div"><a href="/">Back</a></div>
-                    <b>Expense List &nbsp;-&gt;&nbsp; Chart</b>
-                </header>
 
 				<svg width={width} height={height}>
 
@@ -173,13 +162,3 @@ class Chart extends Component {
 	);
   }
 }
-
-export default withTracker(() => {
-	Meteor.subscribe('exps');
-	Meteor.subscribe('cats');
-	return {
-		expenses: Expenses.find({}, { sort: { createdAt: -1 } }).fetch(),
-		cats: Cats.find({}).fetch(),
-		currentUser: Meteor.user(),
-	};
-})(Chart);
