@@ -15,7 +15,7 @@ export default class Page_Signin extends PureComponent {
 		return (
 			<div className="container">
 				<div className="row justify-content-center align-items-center" style={{height:'100vh'}}>
-					<div className="col-4">
+					<div className="col-xs-12 col-sm-8 col-md-6 col-lg-4 col-xl-4">
 						<div className="card">
 							<div className="card-body">
 								<form action="" autoComplete="off" onSubmit={this.submit()}>
