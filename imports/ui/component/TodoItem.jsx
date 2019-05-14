@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import cx from 'classnames';
-import ReactMarkdown from 'react-markdown'
+import MDReactComponent from 'markdown-react-js';
 
 export default class TodoItem extends Component {
 	constructor(props) {
@@ -23,7 +23,10 @@ export default class TodoItem extends Component {
 	}
 
 	setEditable = () => (e) => {
-		this.setState({ editable: !this.state.editable })
+		this.props.item.opened ?
+			this.setState({ editable: !this.state.editable })
+			:
+			Meteor.call('todo.opened', this.props.item._id, function() { this.setState({ editable: !this.state.editable }) }.bind(this));
 	}
 
 	updateDesc = () => (e) => {
@@ -40,6 +43,10 @@ export default class TodoItem extends Component {
 			m = 0
 		}
 		Meteor.call('todo.mark', this.props.item._id, m);
+	}
+
+	areaChanged = () => (e) => {
+		this.save.className = 'badge badge-success'
 	}
 
 	render() {
@@ -71,8 +78,17 @@ export default class TodoItem extends Component {
 				<div className="dragHandle" {...dragHandleProps} />
 
 				<span className="badge badge-info mr-1">{item.idx+1}</span>
-				<span className="badge badge-dark mr-1" onClick={this.setOpened()}>{item.opened?'.':'...'}</span>
-				<span className="badge badge-light">{item.title}</span>
+				<span className="badge badge-dark mr-1" onClick={this.setOpened()}>{item.opened?'O':'...'}</span>
+				<span className="badge badge-light mr-1">{item.title}</span>
+				{this.state.editable ?
+					<>
+						<span className="badge badge-secondary mr-2" onClick={this.setEditable()}>Cancel</span>
+						<span ref={i=>this.save=i} className="badge badge-secondary" onClick={this.updateDesc()}>Save</span>
+					</>
+					:
+					<span className="badge badge-danger" onClick={this.setEditable()}>Edit</span>
+				}
+				<span className="badge badge-success"></span>
 				<div style={{float:'right'}}>
 					<span className="badge badge-dark mr-2" onClick={this.setMark()}>M</span>
 
@@ -81,14 +97,13 @@ export default class TodoItem extends Component {
 				{this.state.editable ?
 						<div className="mt-2">
 							<div className="form-group">
-								<textarea ref={i=>this.desc=i} className="form-control todo" id="area1" defaultValue={item.desc}></textarea>
+								<textarea ref={i=>this.desc=i} className="form-control todo" id="area1" defaultValue={item.desc} onChange={this.areaChanged()}></textarea>
 							</div>
-							<button type="button" className="btn btn-outline-primary btn-sm mb-2" onClick={this.updateDesc()}>update</button>
 						</div>
 						:
 						<div className="mt-2 bg-white" style={{ padding: "5px" }}>
-							<ReactMarkdown source={item.desc} />
-							<button type="button" className="btn btn-outline-dark btn-sm mb-2" onClick={this.setEditable()}>edit</button>
+							{/* <ReactMarkdown source={item.desc} /> */}
+							<MDReactComponent text={item.desc} />
 						</div>
 				}
 			</div>

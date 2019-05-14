@@ -7,7 +7,7 @@
   transform-origin: 30% 50% 0px;
   padding-left: 20px;
   background: white;
-  max-height: 100em;
+  max-height: 1000em;
   transition: max-height 0.5s ease-in;
   padding-top: 2px;
 }

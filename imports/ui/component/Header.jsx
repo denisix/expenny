@@ -12,21 +12,21 @@ export default class Header extends Component {
         return(
 
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-                <a className="navbar-brand" href="#">
+                <Link className="navbar-brand" to="/">
                     <img src="/img/brand.png" width="30" height="30" className="d-inline-block align-top" alt="" />
-                </a>
+                </Link>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                    <span className="navbar-text badge badge-success mr-3 text-dark">
+                    <Link className={'navbar-text badge badge-success mr-3 text-dark'+(path==='/settings'?'active':'')} to="/settings">
 						{this.props.user.username}
-                    </span>
+                    </Link>
 
                     {this.props.user && (
                         <ul className="navbar-nav mr-auto float-right">
-                            <li className={(path=='/exp' || path == '/')?"nav-item active":"nav-item"}>
-                                <Link className="nav-link" to="/exp">Expenses</Link>
+                            <li className={path=='/expenses'?"nav-item active":"nav-item"}>
+                                <Link className="nav-link" to="/expenses">Expenses</Link>
                             </li>
                             <li className={path=='/rev'?"nav-item active":"nav-item"}>
                                 <Link className="nav-link" to="/rev">Revenues</Link>
@@ -39,9 +39,6 @@ export default class Header extends Component {
                             </li>
                             <li className={path=='/chart2'?"nav-item active":"nav-item"}>
                                 <Link className="nav-link" to="/chart2">Stats</Link>
-                            </li>
-                            <li className={path=='/settings'?"nav-item active":"nav-item"}>
-                                <Link className="nav-link" to="/settings">Settings</Link>
                             </li>
                         </ul>
                     )}
