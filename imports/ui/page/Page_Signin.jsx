@@ -35,7 +35,7 @@ export default class Page_Signin extends PureComponent {
 									{this.state.ok && <div className="alert alert-primary" role="alert">{this.state.ok}</div>}
 									{this.state.err && <div className="alert alert-danger" role="alert">{this.state.err}</div>}
 
-									<button onClick={this.submit()} type="button" className="btn btn-primary">Login</button>
+									<button data-cy="submit" onClick={this.submit()} type="button" className="btn btn-primary">Login</button>
 								</form>
 							</div>
 						</div>

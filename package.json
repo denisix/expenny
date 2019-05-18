@@ -2,7 +2,9 @@
   "name": "expenses",
   "private": true,
   "scripts": {
-    "start": "meteor run"
+    "start": "meteor run",
+	"cypress:gui": "cypress open",
+	"cypress:headless": "cypress run"
   },
   "dependencies": {
     "@babel/runtime": "^7.4.4",
@@ -27,6 +29,7 @@
     "semiotic": "1.9.2"
   },
   "devDependencies": {
+    "cypress": "^3.3.0",
     "uglify-js-brunch": "^2.10.0"
   }
 }
