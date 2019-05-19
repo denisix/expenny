@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import cx from 'classnames';
 import MDReactComponent from 'markdown-react-js';
 
 export default class TodoItem extends Component {
@@ -69,7 +68,7 @@ export default class TodoItem extends Component {
 		return (
 
 			<div
-				className={cx('item', {dragged, hide: !item.opened}) + ' '+mark}
+				className={'item ' + (dragged?'dragged':'') + (item.opened?'':'hide') + ' '+mark}
 				style={{
 					transform: `scale(${scale})`,
 					boxShadow: `rgba(0, 0, 0, 0.1) 0px ${shadow}px ${2 * shadow}px 0px`,
