@@ -29,9 +29,9 @@ class App extends Component {
   }
 
   render() {
-	if (this.props.user === false) return <Page_Signin />
 
-	if (!this.props.user || !this.props.ready) return <p>Loading..</p>
+	if (!this.props.ready) return <h4 className="mt-3 ml-3">Loading..</h4>
+	if (!this.props.user) return <Page_Signin />
 
     return (
       <div>

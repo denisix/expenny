@@ -41,28 +41,28 @@ if (Meteor.isServer) {
 	});
 
 	Meteor.publish('exps', () => {
-		const userId = Meteor.userId();
+		const userId = this.userId?this.userId:Meteor.userId();
 		if (userId) {
 			return Expenses.find({ owner: userId });
 		}
 	});
 
 	Meteor.publish('revs', () => {
-		const userId = Meteor.userId();
+		const userId = this.userId?this.userId:Meteor.userId();
 		if (userId) {
 			return Revenues.find({ owner: userId });
 		}
 	});
 
 	Meteor.publish('todos', () => {
-		const userId = Meteor.userId();
+		const userId = this.userId?this.userId:Meteor.userId();
 		if (userId) {
 			return Todos.find({ owner: userId }, { $sort: { idx: 1 }});
 		}
 	});
 
 	Meteor.publish('cats', function expsPublication() {
-		const userId = Meteor.userId();
+		const userId = this.userId?this.userId:Meteor.userId();
 		if (userId) {
 			return Cats.find({ owner: userId });
 		}
@@ -77,49 +77,45 @@ Meteor.methods({
 		check(price, Number);
 		check(date, String);
 
-		console.log('exp.insert => [' + title +'] ['+category+'] ['+price+'] ['+date+']');
+		//console.log('exp.insert => [' + title +'] ['+category+'] ['+price+'] ['+date+']');
 
-		if (! this.userId) {
-			throw new Meteor.Error('not-authorized');
-		}
+		const userId = this.userId?this.userId:Meteor.userId();
+		if (!userId) throw new Meteor.Error('not-authorized');
 
 		var catId = null;
 		var catFound = Cats.findOne({
 			title: category,
-			owner: this.userId,
+			owner: userId,
 			t: 'exp',
 		});
 		catId = catFound ? catFound._id : Cats.insert({
 											"title": category,
-											owner: this.userId,
+											owner: userId,
 											t: 'exp',
 										});
 
-		console.log('exp.insert category ['+category+'] => id '+catId);
+		//console.log('exp.insert category ['+category+'] => id '+catId);
 
 		const affected = Expenses.insert({
 			title: title,
 			price: price,
 			catId: catId,
-			owner: Meteor.userId(),
-			username: Meteor.users.findOne(this.userId).username, //Meteor.user().username,
+			owner: userId,
+			username: Meteor.users.findOne(userId).username, //Meteor.user().username,
 			createdAt: (date == null || date == '') ? new Date() : new Date(date),
 	    });
 
-		console.log('inserted = '+affected);
+		//console.log('inserted = '+affected);
 	},
 
 	'exp.remove'(expId) {
 		check(expId, String);
 
-		if (! this.userId) {
-			throw new Meteor.Error('not-authorized');
-		}
+		const userId = this.userId?this.userId:Meteor.userId();
+		if (!userId) throw new Meteor.Error('not-authorized');
 
 		const exp = Expenses.findOne(expId);
-		if (exp.owner !== this.userId) {
-			throw new Meteor.Error('not-authorized');
-		}
+		if (exp.owner !== userId) throw new Meteor.Error('not-authorized');
 
 		Expenses.remove(expId);
 	},
@@ -127,61 +123,55 @@ Meteor.methods({
 		check(title, String);
 		check(category, String);
 		check(price, Number);
+		
+		const userId = this.userId?this.userId:Meteor.userId();
+		if (!userId) throw new Meteor.Error('not-authorized');
 
 		var catId = null;
 		var catFound = Cats.findOne({
 			title: category,
-			owner: this.userId,
+			owner: userId,
 			t: 'rev',
 		});
 		catId = catFound ? catFound._id : Cats.insert({
 											"title": category,
-											owner: this.userId,
+											owner: userId,
 											t: 'rev',
 										});
 
-		console.log('rev.insert => [' + title +'] ['+category+'] ['+price+']');
-		
-		if (! this.userId) {
-			throw new Meteor.Error('not-authorized');
-		}
-
+		//console.log('rev.insert => [' + title +'] ['+category+'] ['+price+']');
 		const affected = Revenues.insert({
 			title: title,
 			price: price,
 			catId: catId,
-			owner: Meteor.userId(),
-			username: Meteor.users.findOne(this.userId).username, //Meteor.user().username,
+			owner: userId,
+			username: Meteor.users.findOne(userId).username, //Meteor.user().username,
 			createdAt: new Date(),
 	    });
 
-		console.log('inserted = '+affected);
+		//console.log('inserted = '+affected);
 	},
 	'rev.remove'(revId) {
 		check(revId, String);
 
-		if (! this.userId) {
-			throw new Meteor.Error('not-authorized');
-		}
+		const userId = this.userId?this.userId:Meteor.userId();
+		if (!userId) throw new Meteor.Error('not-authorized');
 
 		const rev = Revenues.findOne(revId);
-		if (rev.owner !== this.userId) {
-			throw new Meteor.Error('not-authorized');
-		}
+		if (rev.owner !== userId) throw new Meteor.Error('not-authorized');
 
 		Revenues.remove(revId);
 	},
 	'todo.insert'(title, idx) {
 		check(title, String);
-		console.log('todo.insert => [' + title +']');
+		//console.log('todo.insert => [' + title +']');
 		
-		if (! this.userId) {
-			throw new Meteor.Error('not-authorized');
-		}
+		const userId = this.userId?this.userId:Meteor.userId();
+		if (!userId) throw new Meteor.Error('not-authorized');
 
 		const affected = Todos.insert({
 			title: title,
-			owner: Meteor.userId(),
+			owner: userId,
 			createdAt: new Date(),
 			deadline: null,
 			done: false,
@@ -190,29 +180,30 @@ Meteor.methods({
 			opened: true,
 	    });
 
-		console.log('inserted = '+affected);
+		//console.log('inserted = '+affected);
 	},
 	'todo.move'(id, oldIdx, newIdx) {
 		check(id, String);
 		check(oldIdx, Number);
 		check(newIdx, Number);
-		console.log(`todo.move: id=${id} old=${oldIdx} new=${newIdx}`)
+		//console.log(`todo.move: id=${id} old=${oldIdx} new=${newIdx}`)
 
-		if (!this.userId) throw new Meteor.Error('not-authorized');
+		const userId = this.userId?this.userId:Meteor.userId();
+		if (!userId) throw new Meteor.Error('not-authorized');
 
 		const ret = Todos.findOne(id)
-		if (!ret || ret.owner !== this.userId) throw new Meteor.Error('not-authorized');
+		if (!ret || ret.owner !== userId) throw new Meteor.Error('not-authorized');
 
 		//console.log('id='+id+' old='+oldIdx+' new='+newIdx);
-		const arr = Todos.find({ owner: this.userId }, { sort: { idx: 1 }, fields: { idx: 1 }}).fetch()
+		const arr = Todos.find({ owner: userId }, { sort: { idx: 1 }, fields: { idx: 1 }}).fetch()
 		//console.log(arr)
 
 		let narr = arr
 		const item = narr.splice(oldIdx, 1)[0]
-		console.log('old idx='+oldIdx+' item = ', item, "\n", narr)
+		//console.log('old idx='+oldIdx+' item = ', item, "\n", narr)
 
 		narr.splice(newIdx, 0, item)
-		console.log('new idx='+oldIdx+' item = ', item, "\n", narr)
+		//console.log('new idx='+oldIdx+' item = ', item, "\n", narr)
 
 		narr.forEach((i,k) => {
 			console.log('k='+k, i)
@@ -221,55 +212,45 @@ Meteor.methods({
 	},
 	'todo.opened'(id) {
 		check(id, String);
-		if (! this.userId) {
-			throw new Meteor.Error('not-authorized');
-		}
+		const userId = this.userId?this.userId:Meteor.userId();
+		if (!userId) throw new Meteor.Error('not-authorized');
 
 		const ret = Todos.findOne(id);
-		if (ret.owner !== this.userId) {
-			throw new Meteor.Error('not-authorized');
-		}
+		if (ret.owner !== userId) throw new Meteor.Error('not-authorized');
 
 		Todos.update({ _id: id}, { $set: { opened: !ret.opened }});
 	},
 	'todo.desc'(id,desc) {
 		check(id, String);
 		check(desc, String);
-		if (! this.userId) {
-			throw new Meteor.Error('not-authorized');
-		}
+		const userId = this.userId?this.userId:Meteor.userId();
+		if (!userId) throw new Meteor.Error('not-authorized');
 
 		const ret = Todos.findOne(id);
-		if (ret.owner !== this.userId) {
-			throw new Meteor.Error('not-authorized');
-		}
+		if (ret.owner !== userId) throw new Meteor.Error('not-authorized');
 
 		Todos.update({ _id: id}, { $set: { desc }});
 	},
 	'todo.mark'(id,mark) {
 		check(id, String);
 		check(mark, Number);
-		if (! this.userId) {
-			throw new Meteor.Error('not-authorized');
-		}
+
+		const userId = this.userId?this.userId:Meteor.userId();
+		if (!userId) throw new Meteor.Error('not-authorized');
 
 		const ret = Todos.findOne(id);
-		if (ret.owner !== this.userId) {
-			throw new Meteor.Error('not-authorized');
-		}
+		if (ret.owner !== userId) throw new Meteor.Error('not-authorized');
 
 		Todos.update({ _id: id}, { $set: { mark }});
 	},
 	'todo.rem'(id) {
 		check(id, String);
-		if (! this.userId) {
-			throw new Meteor.Error('not-authorized');
-		}
+
+		const userId = this.userId?this.userId:Meteor.userId();
+		if (!userId) throw new Meteor.Error('not-authorized');
 
 		const ret = Todos.findOne(id);
-		if (ret.owner !== this.userId) {
-			throw new Meteor.Error('not-authorized');
-		}
+		if (ret.owner !== userId) throw new Meteor.Error('not-authorized');
 
 		Todos.remove(id);
 	},
