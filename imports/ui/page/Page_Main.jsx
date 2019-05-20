@@ -15,8 +15,8 @@ export default class Page_Main extends Component {
 		if (!this.props.user) return <p>Please login!</p>;
 		const user = this.props.user
 
-		console.log('exp => ', this.props.expenses)
-		window.EXP = this.props.expenses
+		//console.log('exp => ', this.props.expenses)
+		//window.EXP = this.props.expenses
 
 		const t = new Date()
 		const Y = t.getYear()+1900
@@ -98,7 +98,7 @@ export default class Page_Main extends Component {
 
 				<div className="row">
 
-					<div className="col-md-4 col-sm-12 mt-3">
+					<div className="col-md-6 col-sm-12 mt-3">
 						<div className="list-group mx-3">
 							<Link to="/expenses" className="list-group-item list-group-item-action active">
 								<div className="d-flex w-100 justify-content-between">
@@ -123,23 +123,30 @@ export default class Page_Main extends Component {
 					</div>
 
 
-
-
-					<div className="col-md-4 col-sm-12 mt-3">
+					<div className="col-md-6 col-sm-12 mt-3">
 						<div className="list-group mx-3">
-							<Link to="/exp" className="list-group-item list-group-item-action bg-info text-light">
+							<Link to="/revenues" className="list-group-item list-group-item-action bg-success text-light active">
 								<div className="d-flex w-100 justify-content-between">
-									<h5 className="mb-1">ToDo &nbsp; </h5>
-									<small>3 days ago</small>
+									<h5 className="mb-1">Revenues &nbsp; </h5>
+									<small></small>
 								</div>
 							</Link>
 
-							<div className="list-group-item d-flex justify-content-between align-items-center">За сегодня <span className="badge badge-info">14</span></div>
-							<div className="list-group-item d-flex justify-content-between align-items-center">За неделю <span className="badge badge-info">14</span></div>
-							<div className="list-group-item d-flex justify-content-between align-items-center">За месяц <span className="badge badge-info">14</span></div>
-							<div className="list-group-item d-flex justify-content-between align-items-center">За год <span className="badge badge-info">14</span></div>
+							<Link to="/revenues/today" className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">Today
+								<span className="badge badge-success">{this.props.revenues.filter(i => i.createdAt > t_day).reduce((a,v) => a+v.price, 0)}</span>
+							</Link>
+							<Link to="/revenues/week" className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">This week
+								<span className="badge badge-success">{this.props.revenues.filter(i => i.createdAt > t_week).reduce((a,v) => a+v.price, 0)}</span>
+							</Link>
+							<Link to="/revenues/month" className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">This month
+								<span className="badge badge-success">{this.props.revenues.filter(i => i.createdAt > t_mon).reduce((a,v) => a+v.price, 0)}</span>
+							</Link>
+							<Link to="/revenues/year" className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">This year
+								<span className="badge badge-success">{this.props.revenues.filter(i => i.createdAt > t_year).reduce((a,v) => a+v.price, 0)}</span>
+							</Link>
 						</div>
 					</div>
+
 
 				</div>
 			</div>
