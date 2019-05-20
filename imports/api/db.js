@@ -57,7 +57,7 @@ if (Meteor.isServer) {
 	Meteor.publish('todos', () => {
 		const userId = Meteor.userId();
 		if (userId) {
-			return Todos.find({ owner: userId });
+			return Todos.find({ owner: userId }, { $sort: { idx: 1 }});
 		}
 	});
 
@@ -196,29 +196,26 @@ Meteor.methods({
 		check(id, String);
 		check(oldIdx, Number);
 		check(newIdx, Number);
+		console.log(`todo.move: id=${id} old=${oldIdx} new=${newIdx}`)
 
-		if (! this.userId) {
-			throw new Meteor.Error('not-authorized');
-		}
+		if (!this.userId) throw new Meteor.Error('not-authorized');
 
-		const ret = Todos.findOne(id);
-		if (ret.owner !== this.userId) {
-			throw new Meteor.Error('not-authorized');
-		}
+		const ret = Todos.findOne(id)
+		if (!ret || ret.owner !== this.userId) throw new Meteor.Error('not-authorized');
 
 		//console.log('id='+id+' old='+oldIdx+' new='+newIdx);
-		const arr = Todos.find({}, { sort: { idx: 1 }, fields: { idx: 1 }}).fetch()
+		const arr = Todos.find({ owner: this.userId }, { sort: { idx: 1 }, fields: { idx: 1 }}).fetch()
 		//console.log(arr)
 
 		let narr = arr
 		const item = narr.splice(oldIdx, 1)[0]
-		//console.log('old idx='+oldIdx+' item = ', item, narr)
+		console.log('old idx='+oldIdx+' item = ', item, "\n", narr)
 
 		narr.splice(newIdx, 0, item)
-		//console.log('new idx='+oldIdx+' item = ', item, narr)
+		console.log('new idx='+oldIdx+' item = ', item, "\n", narr)
 
 		narr.forEach((i,k) => {
-			//console.log('k='+k, i)
+			console.log('k='+k, i)
 			if (k !== i.idx) Todos.update({ _id: i._id }, { $set: { idx: k }})
 		})
 	},
