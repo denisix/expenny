@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 
 import Expense from '../component/Expense.js';
 import SuggestCategory from '../component/SuggestCategory.js';
@@ -9,7 +8,7 @@ export default class Page_Expenses extends Component {
   constructor(props) {
   	super(props)
 
-	console.log('props => ', props)
+	//console.log('props => ', props)
 
 	const t = new Date()
 	const Y = t.getYear()+1900
@@ -24,18 +23,21 @@ export default class Page_Expenses extends Component {
 	this.t_week= new Date(Y, M, Dweek, 0, 0, 0)
 	this.t_mon = new Date(Y, M, 0, 0, 0, 0);
 	this.t_year= new Date(Y, 0, 0, 0, 0, 0);
-	this.expenses = []
+	this.expenses = props.expenses
 
 
 	if (props.params && props.params.type) {
 		switch(props.params.type) {
-			case 'today': this.expenses = this.props.expenses.filter(i => i.createdAt > this.t_day); break
-			case 'week': this.expenses = this.props.expenses.filter(i => i.createdAt > this.t_week); break
-			case 'month': this.expenses = this.props.expenses.filter(i => i.createdAt > this.t_mon); break
-			case 'year': this.expenses = this.props.expenses.filter(i => i.createdAt > this.t_year); break
-			default: this.expenses = this.props.expenses
+			case 'today': this.expenses = props.expenses.filter(i => i.createdAt > this.t_day); break
+			case 'week': this.expenses = props.expenses.filter(i => i.createdAt > this.t_week); break
+			case 'month': this.expenses = props.expenses.filter(i => i.createdAt > this.t_mon); break
+			case 'year': this.expenses = props.expenses.filter(i => i.createdAt > this.t_year); break
+			default: this.expenses = props.expenses
 		}
 	}
+
+	//console.log('props exp => ', props.expenses)
+	//console.log('exp => ', this.expenses)
   }
 
   shouldComponentUpdate(p) {
@@ -56,23 +58,23 @@ export default class Page_Expenses extends Component {
 	let inp_date = '';
 
 	if ('date' in this.refs) {
-		inp_date = ReactDOM.findDOMNode(this.refs.date).value.trim();
+		inp_date = this.refs.date.value.trim();
 		console.log('inp_date = '+inp_date);
 	}
 
 	const inp_title = this.refs.title.state.value.trim();
 	const inp_category = this.refs.category.state.value.trim();
-	const inp_price = parseFloat(ReactDOM.findDOMNode(this.refs.price).value.trim());
+	const inp_price = parseFloat(this.refs.price.value.trim());
 
 	if (isNaN(inp_price)) {
-		ReactDOM.findDOMNode(this.refs.price).value = '0';
-		ReactDOM.findDOMNode(this.refs.price).focus();
+		this.refs.price.value = '0';
+		this.refs.price.focus();
 	} else {
 		Meteor.call('exp.insert', inp_title, inp_category, inp_price, inp_date);
 
-		ReactDOM.findDOMNode(this.refs.title).value = '';
-		ReactDOM.findDOMNode(this.refs.price).value = '';
-		ReactDOM.findDOMNode(this.refs.title).focus();
+		this.refs.title.value = '';
+		this.refs.price.value = '';
+		this.refs.title.focus();
 	}
   }
 

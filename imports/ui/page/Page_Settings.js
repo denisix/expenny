@@ -95,7 +95,7 @@ export default class Page_Settings extends Component {
 								<td><input type="checkbox" ref="customDate" defaultChecked={this.getCustomDate()} /></td>
 							</tr>
 							<tr>
-								<td colSpan="3" className="right"><b>{this.state.value}</b> &nbsp; <input className="btn-apply" type="submit" defaultValue="Save" /></td>
+								<td colSpan="3" className="right"><b>{this.state.value}</b> &nbsp; <button className="btn btn-primary" type="submit">Save</button></td>
 							</tr>
 						</tbody>
 					</table>

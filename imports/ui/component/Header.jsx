@@ -8,7 +8,7 @@ export default class Header extends Component {
 
     render() {
 	    const path = this.props.history.location.pathname;
-		console.log('user', this.props.user)
+		//console.log('user', this.props.user)
         return(
 
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -28,11 +28,14 @@ export default class Header extends Component {
                             <li className={path=='/expenses'?"nav-item active":"nav-item"}>
                                 <Link className="nav-link" to="/expenses">Expenses</Link>
                             </li>
-                            <li className={path=='/rev'?"nav-item active":"nav-item"}>
-                                <Link className="nav-link" to="/rev">Revenues</Link>
+                            <li className={path=='/revenues'?"nav-item active":"nav-item"}>
+                                <Link className="nav-link" to="/revenues">Revenues</Link>
                             </li>
                             <li className={path=='/todo'?"nav-item active":"nav-item"}>
                                 <Link className="nav-link" to="/todo">Todo</Link>
+                            </li>
+                            <li className={path=='/loan'?"nav-item active":"nav-item"}>
+                                <Link className="nav-link" to="/loan">Loans</Link>
                             </li>
                             <li className={path=='/chart'?"nav-item active":"nav-item"}>
                                 <Link className="nav-link" to="/chart">Chart</Link>

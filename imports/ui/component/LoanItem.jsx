@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import MDReactComponent from 'markdown-react-js';
 
-export default class TodoItem extends Component {
+export default class LoanItem extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -13,28 +13,28 @@ export default class TodoItem extends Component {
 
 	handleDelete() {
 		if (confirm('Are you sure?')) {
-			Meteor.call('todo.rem', this.props.item._id);
+			Meteor.call('loan.rem', this.props.item._id);
 		}
 	}
 
 	setOpened = () => (e) => {
-		Meteor.call('todo.opened', this.props.item._id);
+		Meteor.call('loan.opened', this.props.item._id);
 	}
 
 	setEditable = () => (e) => {
 		this.props.item.opened ?
 			this.setState({ editable: !this.state.editable })
 			:
-			Meteor.call('todo.opened', this.props.item._id, function() { this.setState({ editable: !this.state.editable }) }.bind(this));
+			Meteor.call('loan.opened', this.props.item._id, function() { this.setState({ editable: !this.state.editable }) }.bind(this));
 	}
 
 	updateTitle = () => (e) => {
 		let title = prompt('Title: ', this.props.item.title);
-		Meteor.call('todo.title', this.props.item._id, title);
+		Meteor.call('loan.title', this.props.item._id, title);
 	}
 
 	updateDesc = () => (e) => {
-		Meteor.call('todo.desc', this.props.item._id, this.desc.value);
+		Meteor.call('loan.desc', this.props.item._id, this.desc.value);
 		this.setState({ editable: false })
 	}
 
@@ -46,12 +46,19 @@ export default class TodoItem extends Component {
 		} else {
 			m = 0
 		}
-		Meteor.call('todo.mark', this.props.item._id, m);
+		Meteor.call('loan.mark', this.props.item._id, m);
 	}
 	
 	share = () => (e) => {
 		let to = prompt('Share to user ID: ', '');
-		Meteor.call('todo.share', this.props.item._id, to);
+		Meteor.call('loan.share', this.props.item._id, to);
+	}
+	
+	handlePay = () => (e) => {
+		console.log('- handlePay()')
+		const amount = parseFloat(this.refs.payamount.value.trim());
+		console.log('- handlePay() amount='+amount)
+		Meteor.call('loan.pay', this.props.item._id, amount);
 	}
 
 	areaChanged = () => (e) => {
@@ -123,6 +130,28 @@ export default class TodoItem extends Component {
 						<div className="mt-2 bg-white" style={{ padding: "5px" }}>
 							{/* <ReactMarkdown source={item.desc} /> */}
 							<MDReactComponent text={item.desc} />
+
+							<ul className="list-group">
+								{item.payed && item.payed.map(i => 
+									<li className="list-group-item d-flex justify-content-between align-items-center">
+										{i.date.toLocaleString()}
+										<span className="badge badge-primary badge-pill">{i.amount}</span>
+									</li>
+								)}
+							</ul>
+							
+							<div className="progress my-3">
+							  <div className="progress-bar progress-bar-striped" role="progressbar" style={{width: '10%'}} aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">10%</div>
+							</div>
+
+							<div className="row">
+								<div className="col-auto">
+									<input ref="payamount" className="form-control form-control-sm" placeholder="Amount" />
+								</div>
+								<div className="col-1">
+									<button onClick={this.handlePay()} className="btn btn-primary btn-sm">Add</button>
+								</div>
+							</div>
 						</div>
 				}
 			</div>
