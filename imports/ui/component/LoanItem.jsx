@@ -32,6 +32,11 @@ export default class LoanItem extends Component {
 		let title = prompt('Title: ', this.props.item.title);
 		Meteor.call('loan.title', this.props.item._id, title);
 	}
+	
+	updateAmount = () => (e) => {
+		let amount = parseFloat(prompt('Amount: ', this.props.item.amount));
+		Meteor.call('loan.amount', this.props.item._id, amount);
+	}
 
 	updateDesc = () => (e) => {
 		Meteor.call('loan.desc', this.props.item._id, this.desc.value);
@@ -82,6 +87,8 @@ export default class LoanItem extends Component {
 			case(5): mark = 'bg-dark'; break
 		}
 
+		const progress = item.payed ? (parseInt((item.payed.reduce((a,i) => a + i.amount, 0)*10000)/item.amount)/100) : 0
+
 		return (
 
 			<div
@@ -96,6 +103,7 @@ export default class LoanItem extends Component {
 				<span className="badge badge-light text-info mr-1" title="ID">{item.idx+1}</span>
 				<span className={'mr-1 oi oi-btn oi-'+(item.opened?'envelope-open':'envelope-closed')} onClick={this.setOpened()} title="Open/Hide"></span>
 				<span className="badge badge-light mr-1" onClick={this.updateTitle()}>{item.title}</span>
+				<span className="badge badge-dark mr-1" onClick={this.updateAmount()}>{item.amount}</span>
 				{this.state.editable ?
 					<>
 						<span className="badge badge-secondary mr-2" onClick={this.setEditable()}>Cancel</span>
@@ -133,15 +141,15 @@ export default class LoanItem extends Component {
 
 							<ul className="list-group">
 								{item.payed && item.payed.map(i => 
-									<li className="list-group-item d-flex justify-content-between align-items-center">
-										{i.date.toLocaleString()}
-										<span className="badge badge-primary badge-pill">{i.amount}</span>
+									<li key={i.date} className="list-group-item d-flex align-items-center">
+										<span className="badge badge-success mr-3">{i.amount}</span>
+										{this.timestamp(i.date)}
 									</li>
 								)}
 							</ul>
-							
+						
 							<div className="progress my-3">
-							  <div className="progress-bar progress-bar-striped" role="progressbar" style={{width: '10%'}} aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">10%</div>
+							  <div className="progress-bar progress-bar-striped" role="progressbar" style={{width: progress+'%'}} aria-valuenow={progress} aria-valuemin="0" aria-valuemax="100">{progress+'%'}</div>
 							</div>
 
 							<div className="row">
@@ -149,12 +157,18 @@ export default class LoanItem extends Component {
 									<input ref="payamount" className="form-control form-control-sm" placeholder="Amount" />
 								</div>
 								<div className="col-1">
-									<button onClick={this.handlePay()} className="btn btn-primary btn-sm">Add</button>
+									<button onClick={this.handlePay()} className="btn btn-dark btn-sm">Add</button>
 								</div>
 							</div>
 						</div>
 				}
 			</div>
 		);
+	}
+
+	timestamp(d) {
+		const t = new Date(d)
+		const a = t.toString().split(' ')
+		return [ a[2], a[1], a[3], a[4] ].join(' ')
 	}
 }

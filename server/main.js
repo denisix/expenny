@@ -333,6 +333,17 @@ Meteor.methods({
 
 		Loans.update({ _id: id}, { $set: { title }});
 	},
+	'loan.amount'(id,amount) {
+		check(id, String);
+		check(amount, String);
+		const userId = this.userId?this.userId:Meteor.userId();
+		if (!userId) throw new Meteor.Error('not-authorized');
+
+		const ret = Loans.findOne(id);
+		if (ret.owner !== userId && ret.shareId !== userId) throw new Meteor.Error('not-authorized');
+
+		Loans.update({ _id: id}, { $set: { amount }});
+	},
 	'loan.desc'(id,desc) {
 		check(id, String);
 		check(desc, String);

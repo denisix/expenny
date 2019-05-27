@@ -7,9 +7,6 @@ import SuggestExpense from '../component/SuggestExpense.js';
 export default class Page_Expenses extends Component {
   constructor(props) {
   	super(props)
-
-	//console.log('props => ', props)
-
 	const t = new Date()
 	const Y = t.getYear()+1900
 	const M = t.getMonth()
@@ -23,8 +20,6 @@ export default class Page_Expenses extends Component {
 	this.t_week= new Date(Y, M, Dweek, 0, 0, 0)
 	this.t_mon = new Date(Y, M, 0, 0, 0, 0);
 	this.t_year= new Date(Y, 0, 0, 0, 0, 0);
-	this.expenses = props.expenses
-
 
 	if (props.params && props.params.type) {
 		switch(props.params.type) {
@@ -34,6 +29,8 @@ export default class Page_Expenses extends Component {
 			case 'year': this.expenses = props.expenses.filter(i => i.createdAt > this.t_year); break
 			default: this.expenses = props.expenses
 		}
+	} else {
+		this.expenses = props.expenses
 	}
 
 	//console.log('props exp => ', props.expenses)
@@ -41,6 +38,7 @@ export default class Page_Expenses extends Component {
   }
 
   shouldComponentUpdate(p) {
+  	//console.log('- exp should', p)
 	if (p.params && p.params.type) {
 		switch(p.params.type) {
 			case 'today': this.expenses = p.expenses.filter(i => i.createdAt > this.t_day); break
@@ -49,40 +47,43 @@ export default class Page_Expenses extends Component {
 			case 'year': this.expenses = p.expenses.filter(i => i.createdAt > this.t_year); break
 			default: this.expenses = p.expenses
 		}
+	} else {
+		this.expenses = p.expenses
 	}
 	return true
   }
 
   handleSubmit(event) {
-    event.preventDefault();
-	let inp_date = '';
+    event.preventDefault()
+	let inp_date = ''
 
 	if ('date' in this.refs) {
-		inp_date = this.refs.date.value.trim();
-		console.log('inp_date = '+inp_date);
+		inp_date = this.refs.date.value.trim()
+		//console.log('inp_date = '+inp_date)
 	}
 
-	const inp_title = this.refs.title.state.value.trim();
-	const inp_category = this.refs.category.state.value.trim();
-	const inp_price = parseFloat(this.refs.price.value.trim());
+	const inp_title = this.refs.title.state.value.trim()
+	const inp_category = this.refs.category.state.value.trim()
+	const inp_price = parseFloat(this.refs.price.value.trim())
+
+	//console.log('inp: ', inp_title, inp_category, inp_price)
 
 	if (isNaN(inp_price)) {
-		this.refs.price.value = '0';
-		this.refs.price.focus();
+		this.refs.price.value = '0'
+		this.refs.price.focus()
 	} else {
-		Meteor.call('exp.insert', inp_title, inp_category, inp_price, inp_date);
+		Meteor.call('exp.insert', inp_title, inp_category, inp_price, inp_date)
 
-		this.refs.title.value = '';
-		this.refs.price.value = '';
-		this.refs.title.focus();
+		this.refs.title.value = ''
+		this.refs.price.value = ''
+		this.refs.title.focus()
 	}
   }
 
   Enter(event) {
     if (event.keyCode === 13) {
-  		event.preventDefault();
-		//console.log('- enter!');
-		this.handleSubmit(event);
+  		event.preventDefault()
+		this.handleSubmit(event)
     }
   }
 
@@ -90,25 +91,16 @@ export default class Page_Expenses extends Component {
 	const c = this.props.cats_exp.filter(function(v){ return v._id == catId});
 	if (c && typeof c === "object" && 0 in c) {
 		//console.log(' category '+ catId +' => '+c[0].title);
-		return c[0].title;
+		return c[0].title
 	}
-	return '-';
-  }
-
-  getExpCount() {
-	return this.expenses.length;
+	return '-'
   }
 
   getExpSum() {
-    var sum = 0;
-	this.expenses.forEach((e) => {
-		sum += e.price;
-	});
-	return Math.round(sum*100)/100;
+	return parseInt(this.expenses.reduce((a,i) => a + i.price, 0)*100)/100
   }
 
   render() {
-
 	const user = this.props.user
     if (!user || typeof user !== "object") return <p>Please login!</p>;
 
@@ -121,9 +113,9 @@ export default class Page_Expenses extends Component {
 		if ("customDate" in user.profile) customDate = user.profile.customDate;
     }
 	const col = customDate ? "col-3 inp-max" : "col-4 inp-max";
+	//console.log('render => ', this.expenses)
 
-    return (
-        <div>
+    return <div>
             <ul className="list-group">
 				<li className="list-group-item">
 					<form className="new-expense" onSubmit={this.handleSubmit.bind(this)}>
@@ -160,7 +152,7 @@ export default class Page_Expenses extends Component {
 									)}
 								</div>
 								<div className="col-6 summarize">
-									<span className="mt-2 badge badge-light">{this.getExpCount()} exp</span>&nbsp;/&nbsp;  
+									<span className="mt-2 badge badge-light">{this.expenses.length} exp</span>&nbsp;/&nbsp;  
 									{order ? (
 										<span className="mt-2 badge badge-warning">
 										{sign} {this.getExpSum()}
@@ -176,11 +168,8 @@ export default class Page_Expenses extends Component {
 					</div>
 					</form>
 				</li>
-                {this.expenses.map((expense) => (
-            		<Expense key={expense._id} expense={expense} category={this.getCategoryById(expense.catId)} sign={sign} order={order} />
-                ))}
+                {this.expenses.map(e => <Expense key={e._id} expense={e} category={this.getCategoryById(e.catId)} sign={sign} order={order} />)}
             </ul>
         </div>
-    );
   }
 }

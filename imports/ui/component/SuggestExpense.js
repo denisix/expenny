@@ -61,6 +61,10 @@ export default class SuggestExpense extends Component {
   	return true;
   }
 
+  focus() {
+	this.instance.input.focus()
+  }
+
   render() {
 	const { value, suggestions } = this.state;
 
@@ -85,7 +89,7 @@ export default class SuggestExpense extends Component {
 
 
 	return (
-		<Autosuggest 
+		<Autosuggest ref={i=>this.instance = i}
 			suggestions={suggestions}
 			onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
 			onSuggestionsClearRequested={this.onSuggestionsClearRequested}

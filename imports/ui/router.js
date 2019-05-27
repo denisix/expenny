@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Route, Switch } from 'react-router';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 import '../lib/jquery-3.3.1.slim.min.js'
 import '../lib/popper.min.js'
@@ -20,7 +18,7 @@ import Page_Revenues	from './page/Page_Revenues'
 import Page_Todo 		from './page/Page_Todo'
 import Page_Loan 		from './page/Page_Loan'
 import Page_Settings 	from './page/Page_Settings'
-import Page_Chart 		from './page/Page_Chart.js';
+//import Page_Chart 		from './page/Page_Chart.js';
 import Page_Chart2 		from './page/Page_Chart2.js';
 import NotFound 		from './page/NotFound.js';
 
@@ -30,6 +28,7 @@ class App extends Component {
   }
 
   render() {
+  	console.log('- Main')
 
 	if (!this.props.ready) return <h4 className="mt-3 ml-3">Loading..</h4>
 	if (!this.props.user) return <Page_Signin />
@@ -46,7 +45,7 @@ class App extends Component {
 		  <Route exact path="/todo" render={p => <Page_Todo {...this.props} params={p.match} />} />
 		  <Route exact path="/loan" render={p => <Page_Loan {...this.props} params={p.match} />} />
           <Route exact path="/settings" render={p => <Page_Settings {...this.props} />} />
-          <Route exact path="/chart" render={p => <Page_Chart {...this.props} params={p.match} />} />
+          {/* <Route exact path="/chart" render={p => <Page_Chart {...this.props} params={p.match} />} /> */}
 		  <Route exact path="/chart2" render={p => <Page_Chart2 {...this.props} params={p.match} />} />
           <Route component={NotFound} />
         </Switch>
