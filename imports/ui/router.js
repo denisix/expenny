@@ -28,7 +28,7 @@ class App extends Component {
   }
 
   render() {
-  	console.log('- Main')
+  	//console.log('- Main')
 
 	if (!this.props.ready) return <h4 className="mt-3 ml-3">Loading..</h4>
 	if (!this.props.user) return <Page_Signin />

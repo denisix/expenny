@@ -44,7 +44,7 @@ export default class Page_Revenues extends Component {
 			default: this.revenues = p.revenues
 		}
 	} else {
-		this.revenues = props.revenues
+		this.revenues = p.revenues
 	}
 	return true
   }
@@ -75,10 +75,7 @@ export default class Page_Revenues extends Component {
 
   getCategoryById(catId) {
 	const c = this.props.cats_rev.filter(function(v){ return v._id == catId})
-	if (c && typeof c === "object" && 0 in c) {
-		//console.log(' category '+ catId +' => '+c[0].title);
-		return c[0].title
-	}
+	if (c && c[0] && c[0].title) return c[0].title
 	return '-'
   }
 
@@ -88,7 +85,7 @@ export default class Page_Revenues extends Component {
 
   render() {
 	const user = this.props.user
-    if (!user || typeof user !== "object") return <p>Please login!</p>
+    if (!user) return <p>Please login!</p>
 
 	let sign = '$';
 	let order = true;
