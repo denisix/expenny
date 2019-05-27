@@ -37,9 +37,10 @@ export default class Header extends Component {
                             <li className={path=='/loan'?"nav-item active":"nav-item"}>
                                 <Link className="nav-link" to="/loan">Loans</Link>
                             </li>
-                            <li className={path=='/chart'?"nav-item active":"nav-item"}>
+{/*                            <li className={path=='/chart'?"nav-item active":"nav-item"}>
                                 <Link className="nav-link" to="/chart">Chart</Link>
                             </li>
+							*/}
                             <li className={path=='/chart2'?"nav-item active":"nav-item"}>
                                 <Link className="nav-link" to="/chart2">Stats</Link>
                             </li>

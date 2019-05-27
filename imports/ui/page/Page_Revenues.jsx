@@ -83,7 +83,6 @@ export default class Page_Revenues extends Component {
   }
 
   getRevSum() {
-    var sum = 0
 	return parseInt(this.revenues.reduce((a,i) => a + i.price, 0)*100)/100
   }
 
@@ -93,9 +92,9 @@ export default class Page_Revenues extends Component {
 
 	let sign = '$';
 	let order = true;
-    if (user && typeof user === "object" && "profile" in user && typeof user.profile === "object") {
-		if ("sign" in user.profile) sign = user.profile.sign;
-		if ("signOrder" in user.profile) order = !user.profile.signOrder;
+    if (user && user.profile) {
+		if (user.profile.sign) sign = user.profile.sign
+		if (user.profile.signOrder) order = !user.profile.signOrder
     }
 
     return <div>

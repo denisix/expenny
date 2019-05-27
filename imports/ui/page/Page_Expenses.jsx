@@ -107,10 +107,10 @@ export default class Page_Expenses extends Component {
 	let sign = '$';
 	let order = true;
 	let customDate = false;
-    if (user && typeof user === "object" && "profile" in user && typeof user.profile === "object") {
-		if ("sign" in user.profile) sign = user.profile.sign;
-		if ("signOrder" in user.profile) order = !user.profile.signOrder;
-		if ("customDate" in user.profile) customDate = user.profile.customDate;
+    if (user && user.profile) {
+		if (user.profile.sign) sign = user.profile.sign
+		if (user.profile.signOrder) order = !user.profile.signOrder
+		if (user.profile.customDate) customDate = user.profile.customDate
     }
 	const col = customDate ? "col-3 inp-max" : "col-4 inp-max";
 	//console.log('render => ', this.expenses)
