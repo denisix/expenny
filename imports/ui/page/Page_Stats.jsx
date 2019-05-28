@@ -1,7 +1,7 @@
-import React, { PureComponent } from 'react';
-import {BarChart, Bar, PieChart, Pie, Cell, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'recharts';
+import React, { PureComponent } from 'react'
+import {BarChart, Bar, PieChart, Pie, Cell, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'recharts'
 
-export default class Page_Chart2 extends PureComponent {
+export default class Page_Stats extends PureComponent {
     constructor(props) {
         super(props)
         this.state = {
@@ -80,7 +80,7 @@ export default class Page_Chart2 extends PureComponent {
             const margin = { top: 5, right: 0, left: 5, bottom: 5 }
             const colors = [ "#12ca9d", "#42ea9d", "#12cafd", "#32ca0d", "#322aad", "#92faad", "#929a9d" ]
 
-        console.log(this.state.data);
+        //console.log(this.state.data);
 
         return (
             <div className="container">

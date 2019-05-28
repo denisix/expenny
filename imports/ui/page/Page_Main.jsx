@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import { Link } from 'react-router-dom';
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 
-import Expense from '../component/Expense.js';
-import SuggestCategory from '../component/SuggestCategory.js';
-import SuggestExpense from '../component/SuggestExpense.js';
+import Expense from '../component/Expense'
+import SuggestCategory from '../component/SuggestCategory'
+import SuggestInput from '../component/SuggestInput'
 
 export default class Page_Main extends Component {
 	constructor(props) {
@@ -53,7 +52,7 @@ export default class Page_Main extends Component {
 								)}
 
 								<div className={col}>
-									<SuggestExpense ref="title" placeholder="Expense" style={{width:"60%", display:"inline-block"}} exps={this.props.expenses} />
+									<SuggestInput ref="title" placeholder="Expense" style={{width:"60%", display:"inline-block"}} items={this.props.expenses} />
 								</div>
 								<div className={col}>
 									<SuggestCategory ref="category" style={{width:"30%"}} cats={this.props.cats_exp} />
@@ -78,7 +77,7 @@ export default class Page_Main extends Component {
 											)}
 										</div>
 										<div className="col-6 summarize">
-											<span className="mt-2 badge badge-light">{this.getExpCount()} exp</span>&nbsp;/&nbsp;  
+											<span className="mt-2 badge badge-light">{this.props.expenses.length} exp</span>&nbsp;/&nbsp;  
 											{order ? (
 												<span className="mt-2 badge badge-warning">
 													{sign} {this.getExpSum()}
@@ -108,16 +107,32 @@ export default class Page_Main extends Component {
 							</Link>
 
 							<Link to="/expenses/today" className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">Today
-								<span className="badge badge-primary">{this.props.expenses.filter(i => i.createdAt > t_day).reduce((a,v) => a+v.price, 0)}</span>
+								{order ? 
+									<span className="badge badge-primary">{sign} {this.props.expenses.filter(i => i.createdAt > t_day).reduce((a,v) => a+v.price, 0)}</span>
+									:
+									<span className="badge badge-primary">{this.props.expenses.filter(i => i.createdAt > t_day).reduce((a,v) => a+v.price, 0)} {sign}</span>
+								}
 							</Link>
 							<Link to="/expenses/week" className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">This week
-								<span className="badge badge-primary">{this.props.expenses.filter(i => i.createdAt > t_week).reduce((a,v) => a+v.price, 0)}</span>
+								{order ? 
+									<span className="badge badge-primary">{sign} {this.props.expenses.filter(i => i.createdAt > t_week).reduce((a,v) => a+v.price, 0)}</span>
+									:
+									<span className="badge badge-primary">{this.props.expenses.filter(i => i.createdAt > t_week).reduce((a,v) => a+v.price, 0)} {sign}</span>
+								}
 							</Link>
 							<Link to="/expenses/month" className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">This month
-								<span className="badge badge-primary">{this.props.expenses.filter(i => i.createdAt > t_mon).reduce((a,v) => a+v.price, 0)}</span>
+								{order ? 
+									<span className="badge badge-primary">{sign} {this.props.expenses.filter(i => i.createdAt > t_mon).reduce((a,v) => a+v.price, 0)}</span>
+									:
+									<span className="badge badge-primary">{this.props.expenses.filter(i => i.createdAt > t_mon).reduce((a,v) => a+v.price, 0)} {sign}</span>
+								}
 							</Link>
 							<Link to="/expenses/year" className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">This year
-								<span className="badge badge-primary">{this.props.expenses.filter(i => i.createdAt > t_year).reduce((a,v) => a+v.price, 0)}</span>
+								{order ? 
+									<span className="badge badge-primary">{sign} {this.props.expenses.filter(i => i.createdAt > t_year).reduce((a,v) => a+v.price, 0)}</span>
+									:
+									<span className="badge badge-primary">{this.props.expenses.filter(i => i.createdAt > t_year).reduce((a,v) => a+v.price, 0)} {sign}</span>
+								}
 							</Link>
 						</div>
 					</div>
@@ -133,16 +148,32 @@ export default class Page_Main extends Component {
 							</Link>
 
 							<Link to="/revenues/today" className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">Today
-								<span className="badge badge-success">{this.props.revenues.filter(i => i.createdAt > t_day).reduce((a,v) => a+v.price, 0)}</span>
+								{order ? 
+									<span className="badge badge-success">{sign} {this.props.revenues.filter(i => i.createdAt > t_day).reduce((a,v) => a+v.price, 0)}</span>
+									:
+									<span className="badge badge-success">{this.props.revenues.filter(i => i.createdAt > t_day).reduce((a,v) => a+v.price, 0)} {sign}</span>
+								}
 							</Link>
 							<Link to="/revenues/week" className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">This week
-								<span className="badge badge-success">{this.props.revenues.filter(i => i.createdAt > t_week).reduce((a,v) => a+v.price, 0)}</span>
+								{order ? 
+									<span className="badge badge-success">{sign} {this.props.revenues.filter(i => i.createdAt > t_week).reduce((a,v) => a+v.price, 0)}</span>
+									:
+									<span className="badge badge-success">{this.props.revenues.filter(i => i.createdAt > t_week).reduce((a,v) => a+v.price, 0)} {sign}</span>
+								}
 							</Link>
 							<Link to="/revenues/month" className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">This month
-								<span className="badge badge-success">{this.props.revenues.filter(i => i.createdAt > t_mon).reduce((a,v) => a+v.price, 0)}</span>
+								{order ? 
+									<span className="badge badge-success">{sign} {this.props.revenues.filter(i => i.createdAt > t_mon).reduce((a,v) => a+v.price, 0)}</span>
+									:
+									<span className="badge badge-success">{this.props.revenues.filter(i => i.createdAt > t_mon).reduce((a,v) => a+v.price, 0)} {sign}</span>
+								}
 							</Link>
 							<Link to="/revenues/year" className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">This year
-								<span className="badge badge-success">{this.props.revenues.filter(i => i.createdAt > t_year).reduce((a,v) => a+v.price, 0)}</span>
+								{order ? 
+									<span className="badge badge-success">{sign} {this.props.revenues.filter(i => i.createdAt > t_year).reduce((a,v) => a+v.price, 0)}</span>
+									:
+									<span className="badge badge-success">{this.props.revenues.filter(i => i.createdAt > t_year).reduce((a,v) => a+v.price, 0)} {sign}</span>
+								}
 							</Link>
 						</div>
 					</div>
@@ -157,53 +188,42 @@ export default class Page_Main extends Component {
 		event.preventDefault();
 		let inp_date = '';
 
-		if ('date' in this.refs) {
-			inp_date = ReactDOM.findDOMNode(this.refs.date).value.trim();
+		if (this.refs.date) {
+			inp_date = this.refs.date.value.trim()
 			console.log('inp_date = '+inp_date);
 		}
 
-		const inp_title = this.refs.title.state.value.trim();
-		const inp_category = this.refs.category.state.value.trim();
-		const inp_price = parseFloat(ReactDOM.findDOMNode(this.refs.price).value.trim());
+		const inp_title = this.refs.title.value()
+		const inp_category = this.refs.category.value()
+		const inp_price = parseFloat(this.refs.price.value.trim())
 
 		if (isNaN(inp_price)) {
-			ReactDOM.findDOMNode(this.refs.price).value = '0';
-			ReactDOM.findDOMNode(this.refs.price).focus();
+			this.refs.price.focus()
 		} else {
-			Meteor.call('exp.insert', inp_title, inp_category, inp_price, inp_date);
+			Meteor.call('exp.insert', inp_title, inp_category, inp_price, inp_date)
 
-			ReactDOM.findDOMNode(this.refs.title).value = '';
-			ReactDOM.findDOMNode(this.refs.price).value = '';
-			ReactDOM.findDOMNode(this.refs.title).focus();
+			this.refs.title.clear()
+			this.refs.title.focus()
 		}
+
+		this.refs.price.value = ''
 	}
 
 	Enter(event) {
 		if (event.keyCode === 13) {
-			event.preventDefault();
-			//console.log('- enter!');
-			this.handleSubmit(event);
+			event.preventDefault()
+			//console.log('- enter!')
+			this.handleSubmit(event)
 		}
 	}
 
 	getCategoryById(catId) {
-		const c = this.props.cats_exp.filter(function(v){ return v._id == catId});
-		if (c && typeof c === "object" && 0 in c) {
-			//console.log(' category '+ catId +' => '+c[0].title);
-			return c[0].title;
-		}
-		return '-';
-	}
-
-	getExpCount() {
-		return this.props.expenses.length;
+		const c = this.props.cats_exp.filter(function(v){ return v._id == catId})
+		if (c && c[0] && c[0].title) return c[0].title
+		return '-'
 	}
 
 	getExpSum() {
-		var sum = 0;
-		this.props.expenses.forEach((e) => {
-			sum += e.price;
-		});
-		return Math.round(sum*100)/100;
+		return Math.round(this.props.expenses.reduce((a,e) => a + e.price, 0)*100)/100
 	}
 }

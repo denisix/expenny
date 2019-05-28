@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
-import Expense from '../component/Expense.js';
-import SuggestCategory from '../component/SuggestCategory.js';
-import SuggestExpense from '../component/SuggestExpense.js';
+import Expense from '../component/Expense'
+import SuggestCategory from '../component/SuggestCategory'
+import SuggestInput from '../component/SuggestInput'
 
 export default class Page_Expenses extends Component {
   constructor(props) {
@@ -57,27 +57,25 @@ export default class Page_Expenses extends Component {
     event.preventDefault()
 	let inp_date = ''
 
-	if ('date' in this.refs) {
+	if (this.refs.date) {
 		inp_date = this.refs.date.value.trim()
 		//console.log('inp_date = '+inp_date)
 	}
 
-	const inp_title = this.refs.title.state.value.trim()
-	const inp_category = this.refs.category.state.value.trim()
+	const inp_title = this.refs.title.value()
+	const inp_category = this.refs.category.value()
 	const inp_price = parseFloat(this.refs.price.value.trim())
 
 	//console.log('inp: ', inp_title, inp_category, inp_price)
 
 	if (isNaN(inp_price)) {
-		this.refs.price.value = '0'
 		this.refs.price.focus()
 	} else {
 		Meteor.call('exp.insert', inp_title, inp_category, inp_price, inp_date)
-
-		this.refs.title.value = ''
-		this.refs.price.value = ''
+		this.refs.title.clear()
 		this.refs.title.focus()
 	}
+	this.refs.price.value = ''
   }
 
   Enter(event) {
@@ -124,7 +122,7 @@ export default class Page_Expenses extends Component {
 						)}
 
 						<div className={col}>
-					  		<SuggestExpense ref="title" placeholder="Expense" style={{width:"60%", display:"inline-block"}} exps={this.expenses} />
+					  		<SuggestInput ref="title" placeholder="Expense" style={{width:"60%", display:"inline-block"}} items={this.expenses} />
 					  	</div>
 						<div className={col}>
 					  		<SuggestCategory ref="category" style={{width:"30%"}} cats={this.props.cats_exp} />

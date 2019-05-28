@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 
-import Revenue from '../component/Revenue.js'
-import SuggestCategory from '../component/SuggestCategory.js'
-import SuggestRevenue from '../component/SuggestRevenue.js'
+import Revenue from '../component/Revenue'
+import SuggestCategory from '../component/SuggestCategory'
+import SuggestInput from '../component/SuggestInput'
 
 export default class Page_Revenues extends Component {
   constructor(props) {
@@ -51,19 +51,19 @@ export default class Page_Revenues extends Component {
 
   handleSubmit(event) {
     event.preventDefault()
-	const inp_title = this.refs.title.state.value.trim()
-	const inp_category = this.refs.category.state.value.trim()
+	const inp_title = this.refs.title.value()
+	const inp_category = this.refs.category.value()
 	const inp_price = parseFloat(this.refs.price.value.trim())
 
 	if (isNaN(inp_price)) {
-		this.refs.price.value = '0'
 		this.refs.price.focus()
 	} else {
 		Meteor.call('rev.insert', inp_title, inp_category, inp_price)
-		this.refs.title.value = ''
-		this.refs.price.value = ''
+		this.refs.title.clear()
 		this.refs.title.focus()
 	}
+
+	this.refs.price.value = ''
   }
 
   Enter(event) {
@@ -100,7 +100,7 @@ export default class Page_Revenues extends Component {
 					<form className="new-revenue" onSubmit={this.handleSubmit.bind(this)}>
 					<div className="row">
 						<div className="col-4 inp-max">
-					  		<SuggestRevenue ref="title" placeholder="Revenue" style={{width:"60%", display:"inline-block"}} revs={this.revenues} />
+					  		<SuggestInput ref="title" placeholder="Revenue" style={{width:"60%", display:"inline-block"}} items={this.revenues} />
 					  	</div>
 						<div className="col-4 inp-max">
 					  		<SuggestCategory ref="category" style={{width:"30%"}} cats={this.props.cats_rev} />

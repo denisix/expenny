@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 
 export default class Header extends Component {
     constructor(props) {
@@ -41,8 +41,8 @@ export default class Header extends Component {
                                 <Link className="nav-link" to="/chart">Chart</Link>
                             </li>
 							*/}
-                            <li className={path=='/chart2'?"nav-item active":"nav-item"}>
-                                <Link className="nav-link" to="/chart2">Stats</Link>
+                            <li className={path=='/stats'?"nav-item active":"nav-item"}>
+                                <Link className="nav-link" to="/stats">Stats</Link>
                             </li>
                         </ul>
                     )}

@@ -19,7 +19,7 @@ import Page_Todo 		from './page/Page_Todo'
 import Page_Loan 		from './page/Page_Loan'
 import Page_Settings 	from './page/Page_Settings'
 //import Page_Chart 		from './page/Page_Chart.js';
-import Page_Chart2 		from './page/Page_Chart2.js';
+import Page_Stats 		from './page/Page_Stats';
 import NotFound 		from './page/NotFound.js';
 
 class App extends Component {
@@ -46,7 +46,7 @@ class App extends Component {
 		  <Route exact path="/loan" render={p => <Page_Loan {...this.props} params={p.match} />} />
           <Route exact path="/settings" render={p => <Page_Settings {...this.props} />} />
           {/* <Route exact path="/chart" render={p => <Page_Chart {...this.props} params={p.match} />} /> */}
-		  <Route exact path="/chart2" render={p => <Page_Chart2 {...this.props} params={p.match} />} />
+		  <Route exact path="/stats" render={p => <Page_Stats {...this.props} params={p.match} />} />
           <Route component={NotFound} />
         </Switch>
 
