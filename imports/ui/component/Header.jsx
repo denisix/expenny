@@ -49,7 +49,7 @@ export default class Header extends Component {
 
                     {!Meteor.isCordova && (
                         <span className="nav-item">
-                            <a href="/Exp.apk" className="nav-link" title="Android App (not signed)"><div className="android-div"></div> For Android</a>
+                            <a href="/Expenny.apk" className="nav-link" title="Android App (not signed)"><div className="android-div"></div> For Android</a>
                         </span>
                     )}
 

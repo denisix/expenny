@@ -1,11 +1,11 @@
 App.info({
-	id: 'com.denisix.meteor.expenses',
-	name: 'Expenses List',
+	id: 'com.denisix.meteor.expenny',
+	name: 'Expenny',
 	version: "0.0.1",
-	description: 'Get über power in one button click',
+	description: 'Your Expenses / Revenues / Loans / Todos in one place',
 	author: 'Denis',
-	email: 'john@dcxv.com',
-	website: 'https://expenses.dcxv.com'
+	email: 'denisix@gmail.com',
+	website: 'https://expenny.icu'
 });
 
 App.icons({
