@@ -107,7 +107,7 @@ export default class Page_Expenses extends Component {
 		if (user.profile.signOrder) order = !user.profile.signOrder
 		if (user.profile.customDate) customDate = user.profile.customDate
     }
-	const col = customDate ? "col-3 inp-max" : "col-4 inp-max";
+	const col = customDate ? "col-3" : "col-4";
 	//console.log('render => ', this.expenses)
 
     return <div>
@@ -116,7 +116,7 @@ export default class Page_Expenses extends Component {
 					<form className="new-expense" onSubmit={this.handleSubmit.bind(this)}>
 					<div className="row">
 						{ customDate && (
-						<div className="col-2 inp-max">
+						<div className="col-2">
 							<input type="text" ref="date" placeholder="2018.12.27" style={{width:"100%", display:"inline-block", padding:"7px 5px"}} />
 						</div>
 						)}

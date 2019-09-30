@@ -23,7 +23,7 @@ export default class Page_Loan extends Component {
 					<li className="list-group-item">
 						<form className="new-loan" onSubmit={this.handleAdd.bind(this)}>
 							<div className="row">
-								<div className="col-md-7 inp-max">
+								<div className="col-md-7">
 									<input ref="who" className="form-control" placeholder="Who" />
 								</div>
 								<div className="col-md-4 summarize">

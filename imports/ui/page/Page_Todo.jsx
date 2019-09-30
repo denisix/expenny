@@ -24,7 +24,7 @@ export default class Page_Todo extends Component {
 					<li className="list-group-item">
 						<form className="new-todo" onSubmit={this.handleAdd.bind(this)}>
 							<div className="row">
-								<div className="col-md-11 inp-max">
+								<div className="col-md-11">
 									<SuggestInput ref="title" placeholder="Todo" style={{width:"95%", display:"inline-block"}} items={this.props.todos} />
 								</div>
 								<div className="col-md-1 summarize">

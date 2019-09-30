@@ -10,10 +10,11 @@ export default class Page_Stats extends PureComponent {
         }
     }
 
-    componentDidUpdate(pProps) {
-        if (pProps.expenses != this.props.expenses ||
-            pProps.revenues != this.props.revenues) {
-            this.setState({ data: this.genData(this.props) })
+    componentDidUpdate(p) {
+        if (p.expenses != this.props.expenses ||
+            p.revenues != this.props.revenues ||
+			p.loans != this.props.loans) {
+	            this.setState({ data: this.genData(this.props) })
         }
     }
 
@@ -34,7 +35,7 @@ export default class Page_Stats extends PureComponent {
                 title: i.title.substr(0,5),
                 t: i.createdAt.getTime(),
                 uv: 0,
-                pv: parseFloat(i.price),
+                pv: parseInt(i.price*100)/100,
             }
         })
 
@@ -42,14 +43,15 @@ export default class Page_Stats extends PureComponent {
             return {
                 title: i.title.substr(0,5),
                 t: i.createdAt.getTime(),
-                uv: parseFloat(i.price),
+                uv: parseInt(i.price*100)/100,
                 pv: 0,
             }
         })
 
-        // Pie EXP
         const bar = exp.concat(rev).sort((a,b) => a.t-b.t)
-        const pie_exp_data = {}
+
+        // Pie EXP
+        let pie_exp_data = {}
         p.expenses.forEach(i => {
             if (!pie_exp_data[i.catId]) pie_exp_data[i.catId] = 0
             pie_exp_data[i.catId] += i.price
@@ -67,10 +69,46 @@ export default class Page_Stats extends PureComponent {
             } 
         })
 
+        // Pie Rev
+        let pie_rev_data = {}
+        p.revenues.forEach(i => {
+            if (!pie_rev_data[i.catId]) pie_rev_data[i.catId] = 0
+            pie_rev_data[i.catId] += i.price
+        })
+
+        let cats_rev_hash = {}
+        p.cats_rev.forEach(i => cats_rev_hash[i._id] = i.title)
+
+        let pie_rev_colors = []
+        const pie_rev = Object.keys(pie_rev_data).map(i => {
+            pie_rev_colors.push(this.genColor())
+            return { 
+                title: cats_rev_hash[i], 
+                uv: pie_rev_data[i]
+            } 
+        })
+
+        // Pie Loans
+        let pie_loa_data = {}
+		p.loans.forEach(i => pie_loa_data[i.title] = i.amount)
+
+        let pie_loa_colors = []
+        const pie_loa = Object.keys(pie_loa_data).map(i => {
+            pie_loa_colors.push(this.genColor())
+            return { 
+                title: i,
+                uv: pie_loa_data[i]
+            }
+        })
+
         return {
             bar,
             pie_exp,
             pie_exp_colors,
+            pie_rev,
+            pie_rev_colors,
+            pie_loa,
+            pie_loa_colors,
         }
     }
 
@@ -83,7 +121,7 @@ export default class Page_Stats extends PureComponent {
         //console.log(this.state.data);
 
         return (
-            <div className="container">
+            <div className="container-fluid">
                 <div className="row justify-content-center align-items-center">
                     <div className="col-12">
 
@@ -109,6 +147,36 @@ export default class Page_Stats extends PureComponent {
                           <Pie data={this.state.data.pie_exp} nameKey="title" dataKey="uv" cx="50%" cy="50%" outerRadius={80} label>
                             {this.state.data.pie_exp.map((entry, index) => (
                                 <Cell key={`cell-${index}`} fill={this.state.data.pie_exp_colors[index]} />
+                            ))}
+                          </Pie>
+                          <Legend iconSize={10} width={120} height={140} layout='vertical' verticalAlign='middle' align="right" />
+                        </PieChart>
+
+                    </div>
+
+                    <div className="col-12 mt-5">
+
+                        <p className="text-center">Revenues</p>
+
+                        <PieChart width={this.state.width} height={250}>
+                          <Pie data={this.state.data.pie_rev} nameKey="title" dataKey="uv" cx="50%" cy="50%" outerRadius={80} label>
+                            {this.state.data.pie_rev.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={this.state.data.pie_rev_colors[index]} />
+                            ))}
+                          </Pie>
+                          <Legend iconSize={10} width={120} height={140} layout='vertical' verticalAlign='middle' align="right" />
+                        </PieChart>
+
+                    </div>
+
+                    <div className="col-12 mt-5">
+
+                        <p className="text-center">Loans</p>
+
+                        <PieChart width={this.state.width} height={250}>
+                          <Pie data={this.state.data.pie_loa} nameKey="title" dataKey="uv" cx="50%" cy="50%" outerRadius={80} label>
+                            {this.state.data.pie_loa.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={this.state.data.pie_loa_colors[index]} />
                             ))}
                           </Pie>
                           <Legend iconSize={10} width={120} height={140} layout='vertical' verticalAlign='middle' align="right" />

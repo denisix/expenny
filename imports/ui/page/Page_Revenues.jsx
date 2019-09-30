@@ -99,13 +99,13 @@ export default class Page_Revenues extends Component {
 				<li className="list-group-item">
 					<form className="new-revenue" onSubmit={this.handleSubmit.bind(this)}>
 					<div className="row">
-						<div className="col-4 inp-max">
+						<div className="col-4">
 					  		<SuggestInput ref="title" placeholder="Revenue" style={{width:"60%", display:"inline-block"}} items={this.revenues} />
 					  	</div>
-						<div className="col-4 inp-max">
+						<div className="col-4">
 					  		<SuggestCategory ref="category" style={{width:"30%"}} cats={this.props.cats_rev} />
 					  	</div>
-						<div className="col-4 inp-max">
+						<div className="col-4">
 							<div className="row">
 								<div className="col-md">
 									{order ? (

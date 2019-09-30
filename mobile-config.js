@@ -4,7 +4,7 @@ App.info({
 	version: "0.0.1",
 	description: 'Your Expenses / Revenues / Loans / Todos in one place',
 	author: 'Denis',
-	email: 'denisix@gmail.com',
+	email: 'info@expenny.icu',
 	website: 'https://expenny.icu'
 });
 

@@ -1,5 +1,5 @@
 {
-  "name": "expenses",
+  "name": "expenny",
   "private": true,
   "scripts": {
     "start": "meteor run",
@@ -7,13 +7,14 @@
     "cypress:headless": "cypress run"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.4",
+    "@babel/runtime": "^7.4.5",
     "@vx/gradient": "0.0.153",
     "@vx/group": "0.0.183",
     "@vx/mock-data": "0.0.153",
     "@vx/shape": "0.0.158",
     "cordova-plugin-splashscreen": "^5.0.2",
     "cordova-plugin-statusbar": "^2.4.1",
+    "fibers": "^4.0.1",
     "history": "^4.9.0",
     "jquery": "^3.4.1",
     "markdown-react-js": "^1.0.2",
@@ -25,11 +26,11 @@
     "react-draggable-list": "^4.0.2",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
-    "recharts": "^1.6.0",
+    "recharts": "^1.6.2",
     "semiotic": "1.9.2"
   },
   "devDependencies": {
-    "cypress": "^3.3.0",
+    "cypress": "^3.3.1",
     "uglify-js-brunch": "^2.10.0"
   }
 }
